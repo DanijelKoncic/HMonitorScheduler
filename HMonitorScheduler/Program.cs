@@ -31,32 +31,32 @@ namespace HMonitorScheduler
                 scheduler.Start();
                 #endregion
 
-                #region Definicija JOB1 - Weather Underground
-                // definiraj job i veži ga uz WeatherQuartz klasu
-                IJobDetail job1 = JobBuilder.Create<WeatherQuartz>()
-                    .WithIdentity("JOB1", "WeatherGroup")
-                    .Build();
+                //#region Definicija JOB1 - Weather Underground
+                //// definiraj job i veži ga uz WeatherQuartz klasu
+                //IJobDetail job1 = JobBuilder.Create<WeatherQuartz>()
+                //    .WithIdentity("JOB1", "WeatherGroup")
+                //    .Build();
 
-                //Izračunaj vrijeme na koje Job počinje s radom (zaokruži na 10 minuta)
-                var dt1 = DateTime.Now;
-                TimeSpan d1 = TimeSpan.FromMinutes(job1Rerun);
-                DateTime runTime1 = new DateTime(((dt1.Ticks + d1.Ticks - job1Rerun) / d1.Ticks) * d1.Ticks);
+                ////Izračunaj vrijeme na koje Job počinje s radom (zaokruži na 10 minuta)
+                //var dt1 = DateTime.Now;
+                //TimeSpan d1 = TimeSpan.FromMinutes(job1Rerun);
+                //DateTime runTime1 = new DateTime(((dt1.Ticks + d1.Ticks - job1Rerun) / d1.Ticks) * d1.Ticks);
 
-                // Triggeriraj da Job krene s izvršenjem na runTime, i ponavljaj ga svakih 20 minuta
-                ITrigger trigger1 = TriggerBuilder.Create()
-                    .WithIdentity("trigger1", "WeatherGroup")
-                    .StartAt(runTime1)
-                    .WithSimpleSchedule(x => x
-                        .WithIntervalInMinutes(job1Rerun)
-                        .RepeatForever())
-                    .Build();
+                //// Triggeriraj da Job krene s izvršenjem na runTime, i ponavljaj ga svakih 20 minuta
+                //ITrigger trigger1 = TriggerBuilder.Create()
+                //    .WithIdentity("trigger1", "WeatherGroup")
+                //    .StartAt(runTime1)
+                //    .WithSimpleSchedule(x => x
+                //        .WithIntervalInMinutes(job1Rerun)
+                //        .RepeatForever())
+                //    .Build();
 
-                // Tell quartz to schedule the job using our trigger
-                scheduler.ScheduleJob(job1, trigger1);
-                Console.WriteLine("Scheduler started...\r\n");
-                Console.WriteLine(String.Format("Job 'JOB1' will start executing at: {0}", Convert.ToString(runTime1)));
-                Console.WriteLine(String.Format("Job 'JOB1' Re-run set to: {0}minutes\r\n", Convert.ToString(job1Rerun)));
-                #endregion
+                //// Tell quartz to schedule the job using our trigger
+                //scheduler.ScheduleJob(job1, trigger1);
+                //Console.WriteLine("Scheduler started...\r\n");
+                //Console.WriteLine(String.Format("Job 'JOB1' will start executing at: {0}", Convert.ToString(runTime1)));
+                //Console.WriteLine(String.Format("Job 'JOB1' Re-run set to: {0}minutes\r\n", Convert.ToString(job1Rerun)));
+                //#endregion
 
                 #region Definicija JOB2 - Plinsko brojilo
                 // definiraj job i veži ga uz WeatherQuartz klasu

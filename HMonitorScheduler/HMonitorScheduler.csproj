@@ -102,7 +102,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQL Skripte\Senzori.sql" />
+    <Content Include="SQL Skripte\SensorGroup table.sql" />
+    <Content Include="SQL Skripte\Sensor table.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

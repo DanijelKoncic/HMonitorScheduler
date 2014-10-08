@@ -99,7 +99,10 @@ namespace HMonitorScheduler
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
+                Console.WriteLine();
+                Console.ResetColor();
                 throw;
             }
         }
@@ -115,7 +118,7 @@ namespace HMonitorScheduler
 
     internal class SensorPlinskoBrojilo : IJob
     {
-        private string _sensorNamePlinCount = "PLINCONNT_";
+        private string _sensorNamePlinCount = "PLINCOUNT_";
         private int _sensorValuePlinCount = 0;
         //private string sensorNamePlinVolt = "PLINVOLT__";
         //private decimal sensorValuePlinVolt = 0;               
@@ -157,7 +160,7 @@ namespace HMonitorScheduler
                 //Kreiraj novi objekt koji se brine za serijsku komunikaciju
                 //var appSettings = ConfigurationManager.AppSettings["ArduinoPlinPort"];
                 //Console.WriteLine(appSettings);
-                var serialObject= new SerialCommunicator("COM7");
+                var serialObject= new SerialCommunicator("COM5");
                 serialObject.OpenCommunication();
                 
                 //Kreiraj i pošalji naredbu
@@ -165,7 +168,7 @@ namespace HMonitorScheduler
                 serialObject.SendData(komanda, komanda.Count());
                 
                 //Primi i procesuiraj odgovor
-                var returnData = serialObject.ReceiveData(500);      //Ovaj timeout je potreban kako bi Arduino stigao pripremiti podatke
+                var returnData = serialObject.ReceiveDataString(500);      //Ovaj timeout je potreban kako bi Arduino stigao pripremiti podatke
 
                 if (returnData.Any())
                 {
@@ -187,14 +190,17 @@ namespace HMonitorScheduler
             }
             catch (Exception ex)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
+                Console.WriteLine();
+                Console.ResetColor();
                 throw;
             }
         }
 
         private void SaveSensor()
         {
-            if (_sensorValuePlinCount > 0)
+            //if (_sensorValuePlinCount > 0)
             {
                 var dateTime = DateTime.Now;
                 SensorData.Save(_sensorNamePlinCount, null, _sensorValuePlinCount, dateTime);
@@ -224,12 +230,12 @@ namespace HMonitorScheduler
                 if (sensor.Substring(0, 2) == "C=")
                 {
                     //counter
-                    _sensorValuePlinCount = Convert.ToInt16(sensor.Substring(2, sensor.Length));
+                    _sensorValuePlinCount = Convert.ToInt16(sensor.Substring(2, sensor.Length - 2));
                 }
                 else if (sensor.Substring(0, 2) == "T=")
                 {
                     //vrijeme u koje se odazvao arduino
-                    _sensorValuePlinTime = Convert.ToInt16(sensor.Substring(2, sensor.Length));
+                    _sensorValuePlinTime = Convert.ToInt16(sensor.Substring(2, sensor.Length - 2));
                 }
             }
         }

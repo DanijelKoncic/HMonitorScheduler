@@ -101,7 +101,7 @@ namespace HMonitorScheduler
             }
         }
 
-        public int[] ReceiveData(int timeout)
+        public int[] ReceiveDataBytes(int timeout)
         {
             System.Threading.Thread.Sleep(timeout);
             //Inicijaliziraj buffer
@@ -114,6 +114,29 @@ namespace HMonitorScheduler
             }
 
             return array1_rxData;
+        }
+
+        public string ReceiveDataString(int timeout)
+        {
+            System.Threading.Thread.Sleep(timeout);
+            //Inicijaliziraj buffer
+
+            //StringBuilder StrBuilder = new StringBuilder();
+
+            int numberOfBytes = _serialPort.BytesToRead;
+            byte[] array1_rxData = new byte[numberOfBytes];
+            //int readByte;
+
+            for (int x = 0; x <= numberOfBytes - 1; x++)
+            {
+                array1_rxData[x] = (byte)_serialPort.ReadByte();
+                //StrBuilder.Append(
+            }
+
+            string result = System.Text.Encoding.UTF8.GetString(array1_rxData);
+
+
+            return result;
         }
     }
 }

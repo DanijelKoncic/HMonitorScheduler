@@ -16,7 +16,7 @@ namespace HMonitorScheduler
                 var dc = new HMonitorData(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection);
 
                 var firstSensor = dc.Sensors.Single(s => s.Code == sensorCode);
-                //Console.WriteLine("Save weather - Sensor name: " + firstSensor.Name);
+                Console.WriteLine("Save weather - Sensor name: " + firstSensor.Name);
 
                 if (firstSensor != null)
                 {

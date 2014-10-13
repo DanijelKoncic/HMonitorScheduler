@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using Quartz;
@@ -118,11 +119,11 @@ namespace HMonitorScheduler
 
     internal class SensorPlinskoBrojilo : IJob
     {
-        private string _sensorNamePlinCount = "PLINCOUNT_";
+        private const string _sensorNamePlinCount = "PLINCOUNT_";
         private int _sensorValuePlinCount = 0;
         //private string sensorNamePlinVolt = "PLINVOLT__";
         //private decimal sensorValuePlinVolt = 0;               
-        private string _sensorNamePlinTime = "PLINTIME__";
+        private const string _sensorNamePlinTime = "PLINTIME__";
         private int _sensorValuePlinTime = 0;
 
         public void Execute(IJobExecutionContext context)
@@ -154,26 +155,60 @@ namespace HMonitorScheduler
                 //}
                 //else
                 //    Console.WriteLine("The appSettings section is empty. Write first.");
-                
-                
-                
-                //Kreiraj novi objekt koji se brine za serijsku komunikaciju
+
+
+/*
+NE - STATIČKA KLASA
+*/
+                ////Kreiraj novi objekt koji se brine za serijsku komunikaciju
                 //var appSettings = ConfigurationManager.AppSettings["ArduinoPlinPort"];
                 //Console.WriteLine(appSettings);
-                var serialObject= new SerialCommunicator("COM5");
-                serialObject.OpenCommunication();
+                //var serialObject = new SerialCommunicator("COM5");
+                //serialObject.OpenCommunication();
                 
+                ////Kreiraj i pošalji naredbu
+                //var komanda = new byte[] { 0x73 };
+                //serialObject.SendData(komanda, komanda.Count());
+                
+                ////Primi i procesuiraj odgovor
+                //var returnData = serialObject.ReceiveDataString(500);      //Ovaj timeout je potreban kako bi Arduino stigao pripremiti podatke
+
+                //if (returnData.Any())
+                //{
+                //    //procesuiraj podatke
+                //    ParseSensorData(string.Join("",returnData));    //Spoji polje u string
+                //    //snimi podatke
+                //    SaveSensor();
+
+                //    #region Ispis za potrebe testiranja
+                //    Console.WriteLine("Received: ");
+                //    foreach (byte b in returnData)
+                //    {
+                //        Console.Write(Convert.ToChar(b));
+                //    }
+                //    #endregion
+                //}
+
+                //serialObject.CloseCommunication();
+
+                
+/*
+STATIČKA KLASA
+*/
+                //Za svaki slučaj otvori komunikaciju
+                SerialCommunicatorStatic.OpenCommunication();
+
                 //Kreiraj i pošalji naredbu
                 var komanda = new byte[] { 0x73 };
-                serialObject.SendData(komanda, komanda.Count());
-                
+                SerialCommunicatorStatic.SendData(komanda, komanda.Count());
+
                 //Primi i procesuiraj odgovor
-                var returnData = serialObject.ReceiveDataString(500);      //Ovaj timeout je potreban kako bi Arduino stigao pripremiti podatke
+                var returnData = SerialCommunicatorStatic.ReceiveDataString(1500);      //Ovaj timeout je potreban kako bi Arduino stigao pripremiti podatke
 
                 if (returnData.Any())
                 {
                     //procesuiraj podatke
-                    ParseSensorData(string.Join("",returnData));    //Spoji polje u string
+                    ParseSensorData(string.Join("", returnData));    //Spoji polje u string
                     //snimi podatke
                     SaveSensor();
 
@@ -186,7 +221,7 @@ namespace HMonitorScheduler
                     #endregion
                 }
 
-                serialObject.CloseCommunication();
+
             }
             catch (Exception ex)
             {

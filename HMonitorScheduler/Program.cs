@@ -27,12 +27,12 @@ namespace HMonitorScheduler
             {
                 //Definicija Schedulera
                 var scheduler = Setup_Scheduler();
+                
                 //Definicija JOB1 - Weather Underground
-                //Privremeno disejblano
                 Setup_JOB1(job1Rerun, scheduler);
                 
                 
-                //Postavljanje serijske komunikacije
+                //Postavljanje serijske komunikacije za JOB2
 
                 //Pazi: čitanje iz app settingsa
                 var cString = HMonitorScheduler.Properties.Settings.Default.ArduinoPlinPort;
@@ -49,7 +49,7 @@ namespace HMonitorScheduler
                     ReceivedBytesThreshold = 1,
                     //Encoding = Encoding.Default  //System.Text.Encoding.GetEncoding(1252);
                 };
-                SerialCommunicatorStatic.CloseCommunication();// Za svaki slučaj prvo zatvori port ako je on otvoren
+                SerialCommunicatorStatic.CloseCommunication();//Za svaki slučaj prvo zatvori port ako je on otvoren
                 SerialCommunicatorStatic.OpenCommunication();
 
                 //Definicija JOB2 - Plinsko brojilo
@@ -143,6 +143,7 @@ namespace HMonitorScheduler
     }
 }
 
+                //  NAZIVI varijabli u XML-u i u bazi podataka-sensor CODE
                 //temp_c                WUTEMP__01
                 //relative_humidity     WUHUMIDI01
                 //observation_location  WULOCATI01

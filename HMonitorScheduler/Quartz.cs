@@ -167,7 +167,7 @@ namespace HMonitorScheduler
             }
         }
 
-        private bool ArduinoComunicate()
+        private bool ArduinoComunicate() //
         {
             bool greska = true; //true = nema greške; false = došlo je do greške
             

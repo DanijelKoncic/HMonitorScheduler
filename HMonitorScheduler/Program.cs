@@ -29,13 +29,17 @@ namespace HMonitorScheduler
                 var scheduler = Setup_Scheduler();
                 //Definicija JOB1 - Weather Underground
                 //Privremeno disejblano
-                //Setup_JOB1(job1Rerun, scheduler);
+                Setup_JOB1(job1Rerun, scheduler);
                 
                 
                 //Postavljanje serijske komunikacije
+
+                //Pazi: čitanje iz app settingsa
+                var cString = HMonitorScheduler.Properties.Settings.Default.ArduinoPlinPort;
+
                 SerialCommunicatorStatic._serialPort = new SerialPort()
                 {
-                    PortName = "COM7",
+                    PortName = "COM6",
                     BaudRate = 9600,
                     DataBits = 8,
                     StopBits = StopBits.One,
@@ -45,6 +49,7 @@ namespace HMonitorScheduler
                     ReceivedBytesThreshold = 1,
                     //Encoding = Encoding.Default  //System.Text.Encoding.GetEncoding(1252);
                 };
+                SerialCommunicatorStatic.CloseCommunication();//Za svaki slučaj prvo zatvori port ako je on otvoren
                 SerialCommunicatorStatic.OpenCommunication();
 
                 //Definicija JOB2 - Plinsko brojilo

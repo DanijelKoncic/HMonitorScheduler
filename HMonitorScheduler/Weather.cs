@@ -109,6 +109,16 @@ namespace HMonitorScheduler
                 xmlNode = weatherData.GetElementsByTagName("observation_time_rfc822").Item(0);
                 if (xmlNode != null && DateTime.TryParse(xmlNode.InnerText, out datum))
                     observation_time_rfc822 = datum;
+                else
+                {
+                    xmlNode = weatherData.GetElementsByTagName("local_time_rfc822").Item(0);
+                    if (xmlNode != null && DateTime.TryParse(xmlNode.InnerText, out datum))
+                        observation_time_rfc822 = datum;
+                    else    
+                        observation_time_rfc822 = DateTime.Now;
+                }
+                //observation_time_rfc822
+                //local_time_rfc822
 
                 //observation_location  WULOCATI01
                 xmlNode = weatherData.GetElementsByTagName("full").Item(0);
@@ -223,69 +233,69 @@ namespace HMonitorScheduler
             
         }
 
-        public void SaveCurrentWeather(string sensorCode, string dataText, decimal? dataNumeric, DateTime sampleDt)
-        {
-            //Spremi podatke u bazu prema senzoru, prikupljenoj vrijednosti i vremenu prikupljanja
-            try
-            {
-                #region Deprecated: Snimanje podataka kroz Disposable klasu
-                //Console.WriteLine(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection);
-                //using (var dc = new HMonitorData(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection))
-                //{
-                //    var first = dc.Sensors.First(s => s.Code == sensorCode);
-                //    Console.WriteLine("Save weather - Sensor name: " + first.Name);
-                //    if (first != null)
-                //    {
-                //        var sensorId = first.SensorId;
-                //        Console.WriteLine("Save weather - Sensor Id:" + Convert.ToString(sensorId));
-                //        var sensorHistoryData = new SensorHistoryData()
-                //        {
-                //            SensorId = sensorId,
-                //            DataNumeric = dataNumeric,
-                //            DataText = dataText,
-                //            SampledDT = sampleDt,
-                //            InsertedDT = DateTime.Now
-                //        };
-                //        dc.Add(sensorHistoryData);
-                //        dc.SaveChanges();
-                //    }
-                //    else
-                //    {
-                //        //TODO: Obavijestiti da ne postoji sensorCode
-                //    }
-                //}
-                #endregion
+        //public void SaveCurrentWeather(string sensorCode, string dataText, decimal? dataNumeric, DateTime sampleDt)
+        //{
+        //    //Spremi podatke u bazu prema senzoru, prikupljenoj vrijednosti i vremenu prikupljanja
+        //    try
+        //    {
+        //        #region Deprecated: Snimanje podataka kroz Disposable klasu
+        //        //Console.WriteLine(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection);
+        //        //using (var dc = new HMonitorData(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection))
+        //        //{
+        //        //    var first = dc.Sensors.First(s => s.Code == sensorCode);
+        //        //    Console.WriteLine("Save weather - Sensor name: " + first.Name);
+        //        //    if (first != null)
+        //        //    {
+        //        //        var sensorId = first.SensorId;
+        //        //        Console.WriteLine("Save weather - Sensor Id:" + Convert.ToString(sensorId));
+        //        //        var sensorHistoryData = new SensorHistoryData()
+        //        //        {
+        //        //            SensorId = sensorId,
+        //        //            DataNumeric = dataNumeric,
+        //        //            DataText = dataText,
+        //        //            SampledDT = sampleDt,
+        //        //            InsertedDT = DateTime.Now
+        //        //        };
+        //        //        dc.Add(sensorHistoryData);
+        //        //        dc.SaveChanges();
+        //        //    }
+        //        //    else
+        //        //    {
+        //        //        //TODO: Obavijestiti da ne postoji sensorCode
+        //        //    }
+        //        //}
+        //        #endregion
 
-                var dc = new HMonitorData(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection);
+        //        var dc = new HMonitorData(HMonitorScheduler.Properties.Settings.Default.HMonitorDataConnection);
 
-                var firstSensor = dc.Sensors.Single(s => s.Code == sensorCode);
-                //Console.WriteLine("Save weather - Sensor name: " + firstSensor.Name);
+        //        var firstSensor = dc.Sensors.Single(s => s.Code == sensorCode);
+        //        //Console.WriteLine("Save weather - Sensor name: " + firstSensor.Name);
                 
-                if (firstSensor != null)
-                {
-                    var sensorId = firstSensor.SensorId;
-                    var sensorHistoryData = new SensorHistoryData()
-                                                {
-                                                    SensorId = sensorId,
-                                                    DataNumeric = dataNumeric,
-                                                    DataText = dataText,
-                                                    SampledDT = sampleDt,
-                                                    InsertedDT = DateTime.Now
-                                                };
-                    dc.Add(sensorHistoryData);
-                    dc.SaveChanges();
-                }
-                else
-                {
-                    Console.WriteLine(String.Format("You are trying to insert data for unregistered sensor ({0})", sensorCode));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
-        }
+        //        if (firstSensor != null)
+        //        {
+        //            var sensorId = firstSensor.SensorId;
+        //            var sensorHistoryData = new SensorHistoryData()
+        //                                        {
+        //                                            SensorId = sensorId,
+        //                                            DataNumeric = dataNumeric,
+        //                                            DataText = dataText,
+        //                                            SampledDT = sampleDt,
+        //                                            InsertedDT = DateTime.Now
+        //                                        };
+        //            dc.Add(sensorHistoryData);
+        //            dc.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine(String.Format("You are trying to insert data for unregistered sensor ({0})", sensorCode));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //        throw;
+        //    }
+        //}
 
     }
 }

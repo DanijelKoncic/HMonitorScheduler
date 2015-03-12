@@ -35,7 +35,7 @@ namespace HMonitorScheduler
             //      možda treba flushati sadržaj serijskog stacka
         }
         
-        public static void CloseCommunication(string serialPortName)
+        public static void CloseCommunication()
         {
             if (_serialPort.IsOpen)
             {

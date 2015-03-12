@@ -49,7 +49,7 @@ namespace HMonitorScheduler
                     ReceivedBytesThreshold = 1,
                     //Encoding = Encoding.Default  //System.Text.Encoding.GetEncoding(1252);
                 };
-                SerialCommunicatorStatic.CloseCommunication();//Za svaki slučaj prvo zatvori port ako je on otvoren
+                SerialCommunicatorStatic.CloseCommunication();// Za svaki slučaj prvo zatvori port ako je on otvoren
                 SerialCommunicatorStatic.OpenCommunication();
 
                 //Definicija JOB2 - Plinsko brojilo
